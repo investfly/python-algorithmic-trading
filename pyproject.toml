@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "investfly-python-algorithmic-trading"
 version = "0.1.0"
-description = "Python algorithmic trading example: EMA crossover, backtesting, and paper trading with the Investfly SDK"
+description = "37 Python trading strategy examples for stocks, forex, crypto, futures, and options with the Investfly SDK"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}

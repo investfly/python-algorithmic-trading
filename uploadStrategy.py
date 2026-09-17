@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from getpass import getpass
 from pathlib import Path
 
@@ -7,8 +8,14 @@ from investfly.models.strategy.TradingStrategyModel import TradingStrategyModel
 
 
 def main() -> None:
-    strategyPath = Path(__file__).parent / "examples" / "StrategyStarterTemplate.py"
+    examplesPath = Path(__file__).parent / "examples"
+    strategyNames = sorted(path.stem for path in examplesPath.glob("*.py") if path.stem != "__init__")
+    parser = ArgumentParser(description="Upload a bundled sample as a private, undeployed Investfly strategy.")
+    parser.add_argument("strategy", nargs="?", default="StrategyStarterTemplate", choices=strategyNames, help="Sample class name; defaults to StrategyStarterTemplate.")
+    args = parser.parse_args()
+    strategyPath = examplesPath / f"{args.strategy}.py"
     strategyCode = strategyPath.read_text(encoding="utf-8")
+    print(f"Uploading {strategyPath.name} as a private, undeployed draft.")
     username = input("Investfly username: ").strip()
     if not username:
         raise SystemExit("An Investfly username is required.")
@@ -21,8 +28,8 @@ def main() -> None:
         api.login(username, password)
         strategy = api.strategyApi.createStrategy(
             TradingStrategyModel(
-                strategyName="StrategyStarterTemplate",
-                strategyDesc="Educational EMA crossover example with hourly trend confirmation and managed exits.",
+                strategyName=args.strategy,
+                strategyDesc=f"Educational Investfly SDK sample: {args.strategy}.",
                 pythonCode=strategyCode,
                 visibility=Visibility.PRIVATE,
             )

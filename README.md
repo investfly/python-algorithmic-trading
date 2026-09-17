@@ -1,9 +1,9 @@
 # Python Algorithmic Trading with the Investfly SDK
 
 Build a Python trading strategy, check it locally, then backtest and paper trade it on [Investfly](https://www.investfly.com/python-algorithmic-trading.html?source=github).
-This repository contains a complete **EMA crossover strategy** from the public `investfly-sdk` sample catalog, with hourly trend confirmation, volatility-based position sizing, and managed exits.
+This repository contains **all 37 strategies** from the public `investfly-sdk` sample catalog: **8 stock/ETF, 5 forex, 5 crypto, 5 futures, and 14 options examples**. Explore momentum, mean reversion, rotation, pairs trading, scaling, hedging, and option lifecycle management.
 
-**[Read the strategy](examples/StrategyStarterTemplate.py) · [SDK documentation](https://www.investfly.com/apidocs/investfly.html) · [Start Free Trial](https://app.investfly.com/register?source=github)**
+**[Browse all strategies](#sample-strategy-catalog) · [SDK documentation](https://www.investfly.com/apidocs/investfly.html) · [Start Free Trial](https://app.investfly.com/register?source=github)**
 
 ## What runs where?
 
@@ -31,7 +31,73 @@ On Windows, create the environment with `py -3 -m venv .venv` and activate it us
 
 The project pins `investfly-sdk==3.1.2` in [pyproject.toml](pyproject.toml). Its base installation includes mypy. A passing type check validates SDK usage; it does not validate profitability, data availability, fills, or hosted execution.
 
-## How the example works
+## Sample strategy catalog
+
+Every strategy below is copied unchanged from the SDK's `investfly/samples/strategies/` directory. Each file defines a standalone sample class; the local `examples/__init__.py` is only a package marker. Descriptions summarize example rules, not expected performance. Asset, data, plan, and broker requirements vary by strategy.
+
+### Stocks and ETFs
+
+| Strategy source | Example behavior |
+| --- | --- |
+| [StrategyStarterTemplate](examples/StrategyStarterTemplate.py) | A compact intraday EMA starter with runtime-managed risk. |
+| [AdaptiveBreadthMomentumStrategy](examples/AdaptiveBreadthMomentumStrategy.py) | Selects technology leaders only when broad-market participation is healthy. |
+| [FundamentalMomentumRotationStrategy](examples/FundamentalMomentumRotationStrategy.py) | Rotates weekly into SP-100 stocks with the strongest blended value, quality, momentum, and stability scores. |
+| [OpeningRangeBreakoutScaleStrategy](examples/OpeningRangeBreakoutScaleStrategy.py) | Trades confirmed opening-range breakouts with managed pyramiding and an intraday exit ladder. |
+| [VwapMeanReversionStrategy](examples/VwapMeanReversionStrategy.py) | Fades statistically unusual intraday VWAP deviations only when the higher-timeframe tape is range-bound. |
+| [PairsZScoreStatArbStrategy](examples/PairsZScoreStatArbStrategy.py) | Trades temporary AAPL/MSFT spread dislocations as a coordinated dollar-balanced long/short pair. |
+| [VolatilityTargetSectorRotationStrategy](examples/VolatilityTargetSectorRotationStrategy.py) | Rebalances monthly into positively trending sector ETFs using capped covariance-aware inverse-volatility weights. |
+| [EventAwareGapFadeStrategy](examples/EventAwareGapFadeStrategy.py) | Fades confirmed opening-gap reversals while excluding news-driven repricing events. |
+
+### Forex
+
+| Strategy source | Example behavior |
+| --- | --- |
+| [ForexRsiHedgedRangeStrategy](examples/ForexRsiHedgedRangeStrategy.py) | Fades extreme EUR/USD one-minute RSI readings inside a higher-timeframe range and permits broker-supported hedged exposure. |
+| [UsdJpyMonthlyMomentumStrategy](examples/UsdJpyMonthlyMomentumStrategy.py) | Takes a monthly USD/JPY position at the London open after daily and hourly regime checks. |
+| [LondonBreakoutRetestStrategy](examples/LondonBreakoutRetestStrategy.py) | Trades GBP/USD only after an Asian-range breakout retests the boundary in the trend direction. |
+| [ForexCrossSectionMomentumStrategy](examples/ForexCrossSectionMomentumStrategy.py) | Ranks liquid USD currency pairs weekly, holding the strongest long and weakest short. |
+| [MultiTimeframePullbackPyramidForexStrategy](examples/MultiTimeframePullbackPyramidForexStrategy.py) | Trades USD/JPY pullback recoveries only when hourly and daily trends agree. |
+
+### Crypto
+
+| Strategy source | Example behavior |
+| --- | --- |
+| [VolatilityAdaptiveDcaGridCryptoStrategy](examples/VolatilityAdaptiveDcaGridCryptoStrategy.py) | Accumulates BTC on a fixed schedule and at volatility-spaced safety levels with strict caps. |
+| [CryptoRelativeStrengthRotationStrategy](examples/CryptoRelativeStrengthRotationStrategy.py) | Rotates weekly into the strongest liquid USD crypto assets while monitoring intraday drawdowns. |
+| [CryptoBreakoutPyramidStrategy](examples/CryptoBreakoutPyramidStrategy.py) | Trades liquid BTC and ETH breakouts from intraday compression and pyramids only after confirmation. |
+| [CryptoPairsRatioReversionStrategy](examples/CryptoPairsRatioReversionStrategy.py) | Rotates long-only capital toward the relatively undervalued side of the BTC/ETH ratio. |
+| [WeekendLiquidityMeanReversionStrategy](examples/WeekendLiquidityMeanReversionStrategy.py) | Fades weekend BTC and ETH liquidity dislocations after a one-minute reversal confirms. |
+
+### Futures
+
+| Strategy source | Example behavior |
+| --- | --- |
+| [FutureBreakoutStrategy](examples/FutureBreakoutStrategy.py) | Trades adaptive MNQ five-minute channel breaks in the hourly trend direction. |
+| [MesOpeningRangeBreakoutStrategy](examples/MesOpeningRangeBreakoutStrategy.py) | Trades one confirmed MES opening-range break per session and adds one contract only after favorable movement. |
+| [MclVwapMeanReversionStrategy](examples/MclVwapMeanReversionStrategy.py) | Fades confirmed MCL session-VWAP extremes only inside a bounded hourly volatility regime. |
+| [MgcTrendPullbackPyramidStrategy](examples/MgcTrendPullbackPyramidStrategy.py) | Trades MGC pullback recoveries only when fifteen-minute, hourly, and daily trends agree. |
+| [M2kRsiRangeScalperStrategy](examples/M2kRsiRangeScalperStrategy.py) | Fades one-minute M2K RSI extremes only while the fifteen-minute market remains range-bound. |
+
+### Options
+
+| Strategy source | Example behavior |
+| --- | --- |
+| [DirectionalLongOptionRegimeStrategy](examples/DirectionalLongOptionRegimeStrategy.py) | Selects long calls or puts from a five-minute, hourly, and daily directional regime. |
+| [AdaptiveDebitSpreadOptionStrategy](examples/AdaptiveDebitSpreadOptionStrategy.py) | Selects bull-call or bear-put debit spreads only when five-minute and hourly trends agree. |
+| [AdaptiveCreditSpreadOptionStrategy](examples/AdaptiveCreditSpreadOptionStrategy.py) | Sells a defined-risk credit spread on the side opposite the aligned daily and intraday trend. |
+| [IronCondorVolatilityContractionStrategy](examples/IronCondorVolatilityContractionStrategy.py) | Opens a weekly SPY iron condor only after intraday range contraction and bounded hourly drift. |
+| [DirectionalButterflyPinStrategy](examples/DirectionalButterflyPinStrategy.py) | Projects a short-horizon AAPL pin and centers a call or put butterfly near that target. |
+| [WheelLifecycleOptionStrategy](examples/WheelLifecycleOptionStrategy.py) | Runs a weekly AAPL Wheel from screened put sale through assignment, covered-call income, and completion. |
+| [StraddleVolatilityRegimeStrategy](examples/StraddleVolatilityRegimeStrategy.py) | Buys an ATM straddle during realized-volatility expansion and sells one only in guarded compression. |
+| [StrangleVolatilityRegimeStrategy](examples/StrangleVolatilityRegimeStrategy.py) | Uses intraday range expansion and daily movement to choose long or guarded short OTM strangles. |
+| [CalendarTermStructureStrategy](examples/CalendarTermStructureStrategy.py) | Chooses call or put calendars from aligned intraday/daily direction and inspects the live expiration surface. |
+| [DiagonalIncomeTrendStrategy](examples/DiagonalIncomeTrendStrategy.py) | Selects call or put diagonals in aligned intraday/hourly trends and rolls named near/far leg pairs. |
+| [ProtectiveHedgeTransitionStrategy](examples/ProtectiveHedgeTransitionStrategy.py) | Buys AAPL with a protective put during a recoverable drawdown, transitions to a collar, then liquidates cleanly. |
+| [IronButterflyPinRiskStrategy](examples/IronButterflyPinRiskStrategy.py) | Schedules a SPY iron butterfly only when price remains pinned near session VWAP in a quiet hourly regime. |
+| [LongCallCondorTargetStrategy](examples/LongCallCondorTargetStrategy.py) | Centers a long call condor around a moderate AAPL upside forecast derived from intraday and daily context. |
+| [CustomRatioBackspreadStrategy](examples/CustomRatioBackspreadStrategy.py) | Opens an explicit one-by-two AAPL call ratio backspread only during confirmed upside acceleration. |
+
+## How the EMA starter works
 
 The source is copied unchanged from the SDK's `investfly/samples/strategies/StrategyStarterTemplate.py`. The symbols and thresholds below are illustrative inputs, not recommendations.
 
@@ -59,16 +125,22 @@ Three SDK concepts connect the strategy:
 
 1. [Create your Investfly account](https://app.investfly.com/register?source=github).
 2. Read the example and choose the rules you want to test.
-3. From the activated project environment, run:
+3. From the activated project environment, choose a sample by its class name (the filename without `.py`):
 
    ```bash
+   python uploadStrategy.py VwapMeanReversionStrategy
+
+   # Omit the name to upload StrategyStarterTemplate.
    python uploadStrategy.py
+
+   # List every available sample and command usage.
+   python uploadStrategy.py --help
    ```
 
 4. Enter your **Investfly** username and password at the prompts. The password input is hidden; the script does not write credentials to files or put them in command-line arguments.
 5. Open the strategy URL printed by the script.
 
-The helper creates a **private, undeployed draft** and logs out afterward. It does not connect a broker, start a backtest, deploy a strategy, or place orders. Running it again requests another creation; edit the existing strategy in the app if you only want to revise its code.
+The helper uses the selected file's contents and class name to create a **private, undeployed draft**, then logs out afterward. It does not connect a broker, start a backtest, deploy a strategy, or place orders. Running it again requests another creation; edit the existing strategy in the app if you only want to revise its code.
 
 The SDK also includes the interactive `investfly-cli`; enter `-h` at its prompt to explore its commands. See the [hosted Python strategy guide](https://www.investfly.com/help/pythonHostedTradingBot.html).
 
@@ -89,16 +161,16 @@ See [backtesting](https://www.investfly.com/help/backtestTradingStrategy.html) a
 - Adjust stops, targets, protection changes, and maximum hold in `getStrategyPolicy()`.
 - Re-run the type check after editing, then review the revised strategy in hosted testing.
 
-Use the [SDK API reference](https://www.investfly.com/apidocs/investfly.html) to inspect supported types and interfaces. For additional examples, launch `investfly-cli` and enter `copysamples` at its interactive prompt; this copies the SDK's bundled strategies and indicators locally.
+Use the [SDK API reference](https://www.investfly.com/apidocs/investfly.html) to inspect supported types and interfaces. To also copy the SDK's bundled indicator examples, launch `investfly-cli` and enter `copysamples` at its interactive prompt.
 
 ## Files
 
 ```text
-examples/StrategyStarterTemplate.py  Original SDK EMA strategy example
-examples/__init__.py                 Example package
-uploadStrategy.py                   Credential-prompting private draft upload
-pyproject.toml                      Python version and public SDK dependency
-LICENSE                            MIT license from the SDK
+examples/*.py        All 37 original SDK sample strategies
+examples/__init__.py  Example package marker
+uploadStrategy.py    Upload any selected sample as a private draft
+pyproject.toml       Python version and public SDK dependency
+LICENSE              MIT license from the SDK
 ```
 
 ## Limits and support
