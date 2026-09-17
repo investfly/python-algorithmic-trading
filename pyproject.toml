@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "investfly-python-algorithmic-trading"
+version = "0.1.0"
+description = "Python algorithmic trading example: EMA crossover, backtesting, and paper trading with the Investfly SDK"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+authors = [{name = "Investfly"}]
+dependencies = ["investfly-sdk==3.1.2"]
+keywords = ["algorithmic-trading", "python", "trading-strategy", "backtesting", "paper-trading", "investfly-sdk"]
+
+[project.urls]
+Homepage = "https://www.investfly.com/python-algorithmic-trading.html"
+Documentation = "https://www.investfly.com/apidocs/investfly.html"
+Repository = "https://github.com/investfly/python-algorithmic-trading"
+
+[tool.setuptools]
+packages = ["examples"]
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
